@@ -12,7 +12,7 @@ app.use(express.static('public'));
 // 캐릭터 식별자 조회 엔드포인트
 app.get('/character/id/:name', async (req, res) => {
     const characterName = req.params.name;
-    const idUrl = `https://open.api.nexon.com/heroes/v2/id?character_name=${characterName}`;
+    const idUrl = `http://open.api.nexon.com/heroes/v2/id?character_name=${characterName}`;
 
     try {
         const idResponse = await fetch(idUrl, {
@@ -22,12 +22,15 @@ app.get('/character/id/:name', async (req, res) => {
             }
         });
 
+        // 응답을 로그에 출력
+        const idData = await idResponse.json();
+        console.log('API 응답 데이터:', idData);
+
         if (!idResponse.ok) {
             return res.status(404).send('캐릭터 식별자를 찾을 수 없습니다.');
         }
 
-        const idData = await idResponse.json();
-        res.json(idData);  // 받은 데이터를 그대로 클라이언트로 전달
+        res.json(idData);
     } catch (error) {
         res.status(500).send('서버 오류: ' + error.message);
     }
