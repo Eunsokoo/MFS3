@@ -3,19 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마비노기 영웅전 캐릭터 조회</title>
-    <link rel="stylesheet" href="style.css">
+    <title>마비노기 영웅전 캐릭터 조회 V2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>마비노기 영웅전 캐릭터 조회</h1>
-        <input type="text" id="characterName" placeholder="캐릭터명을 입력하세요">
-        <button onclick="getCharacterInfo()">조회하기</button>
-
-        <div id="result" class="result">
-            <!-- 캐릭터 정보가 여기 표시됩니다 -->
-        </div>
-    </div>
+    <h1>마비노기 영웅전 캐릭터 조회 V2</h1>
+    <input type="text" id="characterName" placeholder="캐릭터명을 입력하세요">
+    <button onclick="getCharacterInfo()">조회</button>
+    <div id="result"></div>
 
     <script src="script.js"></script>
 </body>
