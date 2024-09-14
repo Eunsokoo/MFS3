@@ -44,23 +44,25 @@ async function getCharacterInfo() {
         // 날짜 형식 변경 함수
         function formatDate(dateString) {
             const date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                return '날짜 정보 없음'; // 날짜 형식 오류 처리
+            }
             return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${date.getHours()}시 ${date.getMinutes()}분 ${date.getSeconds()}초`;
         }
 
         // 결과 형식화
         let formattedResult = `
-            캐릭터 이름: ${infoData.character_name}<br>
+            캐릭터: ${infoData.character_name} (${infoData.character_class_name})<br>
+            카르제: ${infoData.cairde_name}<br>
+            타이틀 수: ${infoData.total_title_count}<br><br>
             생성 일자: ${formatDate(infoData.character_date_create)}<br>
             마지막 로그인: ${formatDate(infoData.character_last_login)}<br>
-            마지막 로그아웃: ${formatDate(infoData.character_last_logout)}<br>
-            직업: ${infoData.character_class_name}<br>
-            유저명: ${infoData.cairde_name}<br>
-            총 제목 수: ${infoData.total_title_count}<br>
-            각성 스킬:<br>
+            마지막 로그아웃: ${formatDate(infoData.character_last_logout)}<br><br>
+            스킬 각성:<br>
         `;
 
         // 스킬 각성 데이터 형식화
-        const skillAwakening = infoData.skill_awakening.map(skill => `${skill.skill_name} : ${skill.item_name}`).join('<br>');
+        const skillAwakening = infoData.skill_awakening.map(skill => `    ${skill.skill_name} : ${skill.item_name}`).join('<br>');
         formattedResult += skillAwakening + `<br><br>`;
 
         resultDiv.innerHTML = formattedResult;

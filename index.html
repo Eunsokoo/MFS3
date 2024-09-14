@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마비노기 영웅전 캐릭터 조회 V2</title>
+    <title>마비노기 영웅전 캐릭터 조회 V2.3</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            font-size: 1.5em; /* 글씨 크기 두 배로 키우기 */
+            text-align: center; /* 가운데 정렬 */
             margin: 20px;
         }
         #result {
             margin-top: 20px;
+            font-size: 1.2em; /* 결과 부분 글씨 크기 증가 */
         }
-        .error {
-            color: red;
+        input, button {
+            font-size: 1.2em; /* 입력 필드와 버튼 글씨 크기 증가 */
+            margin: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>마비노기 영웅전 캐릭터 조회 V2</h1>
+    <h1>마비노기 영웅전 캐릭터 조회 V2.3</h1>
     <input type="text" id="characterName" placeholder="캐릭터명을 입력하세요">
     <button onclick="getCharacterInfo()">조회</button>
     <div id="result"></div>
