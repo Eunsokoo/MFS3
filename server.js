@@ -12,7 +12,7 @@ app.use(express.static('public'));
 // 캐릭터 식별자 조회 엔드포인트
 app.get('/character/id/:name', async (req, res) => {
     const characterName = req.params.name;
-    const idUrl = `http://open.api.nexon.com/heroes/v2/id?character_name=${characterName}`;
+    const idUrl = `https://open.api.nexon.com/heroes/v2/id?character_name=${characterName}`;
 
     try {
         const idResponse = await fetch(idUrl, {
