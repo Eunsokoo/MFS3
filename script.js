@@ -54,7 +54,7 @@ async function getCharacterInfo() {
         const skillAwakening = infoData.skill_awakening.length > 0
             ? infoData.skill_awakening.map(skill => {
                 const itemName = skill.item_name.replace('각성의 돌: ', '').trim();
-                return `    <div class="skill-item"><div>${skill.skill_name}</div><div>${itemName}</div></div>`;
+                return `    <div class="skill-item"><div>${skill.skill_name}</div>${itemName}</div></div>`;
             }).join('<br>')
             : '정보 없음';
 
@@ -66,9 +66,8 @@ async function getCharacterInfo() {
             생성 일자: ${formatDate(infoData.character_date_create)}<br>
             마지막 로그인: ${formatDate(infoData.character_date_last_login)}<br>
             마지막 로그아웃: ${formatDate(infoData.character_date_last_logout)}<br><br>
-            스킬 각성:<br>
+            스킬 각성:<br><br>
             ${skillAwakening}<br><br>
-            원문 결과:<br><pre>${JSON.stringify(infoData, null, 2)}</pre>
         `;
 
         resultDiv.innerHTML = formattedResult;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마비노기 영웅전 캐릭터 조회 V2.2</title>
+    <title>마비노기 영웅전 캐릭터 조회</title>
     <style>
 body {
     font-family: Arial, sans-serif;
@@ -22,19 +22,19 @@ body {
 .skill-item {
     display: flex;
     justify-content: space-between;
-    line-height: 1.2; /* 줄 간격 조정 */
+    line-height: 0.4; /* 줄 간격 조정 */
     margin: 0; /* 마진 제거 */
     padding: 0; /* 패딩 제거 */
-    position: relative; /* 위치 조정을 위한 상대 위치 지정 */
+
 }
 
 .skill-item .skill-name {
-    padding-right: 100px; /* 왼쪽 텍스트 오른쪽 여백 */
+    text-indent: 2000px; /* 왼쪽 정렬된 값 앞에 공백 추가 */
     text-align: left; /* 왼쪽 정렬 */
 }
 
 .skill-item .item-name {
-    padding-left: 100px; /* 오른쪽 텍스트 왼쪽 여백 */
+    padding-right: 60px; /* 오른쪽 정렬된 값 뒤에 공백 추가 */
     text-align: right; /* 오른쪽 정렬 */
 }
 
@@ -45,11 +45,13 @@ input, button {
     </style>
 </head>
 <body>
-    <h1>마비노기 영웅전 캐릭터 조회 V2.2</h1>
+    <h1>마비노기 영웅전 캐릭터 조회 Ver. Test</h1>
     <input type="text" id="characterName" placeholder="캐릭터명을 입력하세요">
     <button onclick="getCharacterInfo()">조회</button>
     <div id="result"></div>
 
     <script src="script.js"></script>
+
+    <h5>Data based on NEXON Open API</h5>
 </body>
 </html>
