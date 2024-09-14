@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
-    <link rel="stylesheet" href="style.css"> <!-- CSS 연결 -->
+    <title>마비노기 영웅전 캐릭터 정보</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Hello, World!</h1>
-    <p>This is my first website using VS Code.</p>
+    <div class="container">
+        <h1>마비노기 영웅전 캐릭터 조회</h1>
+        <input type="text" id="characterName" placeholder="캐릭터명을 입력하세요">
+        <button onclick="getCharacterInfo()">조회하기</button>
 
-    <!-- 입력칸 추가 -->
-    <label for="userInput">입력하세요:</label>
-    <input type="text" id="userInput" placeholder="텍스트 입력">
-    <button id="submitButton">제출</button>
-    <p id="output"></p> <!-- 결과를 표시할 영역 -->
+        <div id="result" class="result">
+            <!-- 캐릭터 정보가 여기 표시됩니다 -->
+        </div>
+    </div>
 
-    <script src="script.js"></script> <!-- JavaScript 연결 -->
+    <script src="script.js"></script>
 </body>
 </html>
