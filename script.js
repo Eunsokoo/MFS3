@@ -1,5 +1,3 @@
-const apiKey = 'test_851246cc844528a3ae6e5b63f57aba17fa1d33810a475c7bf148917be2056f88efe8d04e6d233bd35cf2fabdeb93fb0d';
-
 async function getCharacterInfo() {
     const characterName = document.getElementById('characterName').value;
     const resultDiv = document.getElementById('result');
@@ -9,16 +7,9 @@ async function getCharacterInfo() {
         return;
     }
 
-    // 1. 캐릭터명을 사용하여 식별자 요청
-    const idUrl = `http://open.api.nexon.com/heroes/v2/id?character_name=${characterName}`;
-    
     try {
-        const idResponse = await fetch(idUrl, {
-            method: 'GET',
-            headers: {
-                'x-nxopen-api-key': apiKey
-            }
-        });
+        // 1. 캐릭터 식별자 요청 (로컬 서버로 요청)
+        const idResponse = await fetch(`/character/id/${characterName}`);
         
         if (!idResponse.ok) {
             throw new Error('캐릭터 식별자를 찾을 수 없습니다.');
@@ -27,27 +18,19 @@ async function getCharacterInfo() {
         const idData = await idResponse.json();
         const ocid = idData.ocid;
 
-        // 2. 식별자를 사용하여 캐릭터 기본 정보 요청
-        const infoUrl = `http://open.api.nexon.com/heroes/v2/character/basic?ocid=${ocid}`;
-        const infoResponse = await fetch(infoUrl, {
-            method: 'GET',
-            headers: {
-                'x-nxopen-api-key': apiKey
-            }
-        });
-
+        // 2. 식별자를 사용해 캐릭터 기본 정보 요청
+        const infoResponse = await fetch(`/character/info/${ocid}`);
+        
         if (!infoResponse.ok) {
             throw new Error('캐릭터 정보를 찾을 수 없습니다.');
         }
 
         const characterData = await infoResponse.json();
 
-        // 3. 캐릭터 정보를 화면에 표시 (URL과 식별자 포함)
+        // 3. 결과 표시
         resultDiv.innerHTML = `
             <h2>캐릭터 조회 결과</h2>
-            <p><strong>캐릭터명 요청 URL:</strong> ${idUrl}</p>
             <p><strong>받은 식별자 (ocid):</strong> ${ocid}</p>
-            <p><strong>캐릭터 정보 요청 URL:</strong> ${infoUrl}</p>
             <h2>캐릭터 정보</h2>
             <p><strong>이름:</strong> ${characterData.character_name}</p>
             <p><strong>생성일:</strong> ${new Date(characterData.character_date_create).toLocaleString()}</p>
