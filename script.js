@@ -6,7 +6,7 @@ async function getCharacterInfo() {
         resultDiv.innerHTML = '캐릭터명을 입력하세요.';
         return;
     }
-
+debugger;
     try {
         // 첫 번째 통신 요청
         const response = await fetch(`/character/id/${characterName}`);

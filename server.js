@@ -13,7 +13,7 @@ app.use(express.static('public'));
 app.get('/character/id/:name', async (req, res) => {
     const characterName = req.params.name;
     const idUrl = `http://open.api.nexon.com/heroes/v2/id?character_name=${characterName}`;
-
+debugger;
     try {
         const idResponse = await fetch(idUrl, {
             method: 'GET',
@@ -21,7 +21,7 @@ app.get('/character/id/:name', async (req, res) => {
                 'x-nxopen-api-key': apiKey
             }
         });
-
+debugger;
         // 응답을 로그에 출력
         const idData = await idResponse.json();
         console.log('API 응답 데이터:', idData);
