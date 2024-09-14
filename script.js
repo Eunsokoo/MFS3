@@ -53,8 +53,8 @@ async function getCharacterInfo() {
         // 스킬 각성 정보 처리
         const skillAwakening = infoData.skill_awakening.length > 0
             ? infoData.skill_awakening.map(skill => {
-                const [skillName, itemName] = skill.skill_name.split('각성의 돌:').map(s => s.trim());
-                return `    ${skillName} : ${itemName}`;
+                const itemName = skill.item_name.replace('각성의 돌: ', '').trim();
+                return `    <div class="skill-item"><div>${skill.skill_name}</div><div>${itemName}</div></div>`;
             }).join('<br>')
             : '정보 없음';
 
