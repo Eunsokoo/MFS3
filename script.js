@@ -41,23 +41,32 @@ async function getCharacterInfo() {
 
         const infoData = await infoResponse.json();
 
+        // 날짜 형식 변경 함수
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime()) || !dateString) {
+                return '정보 없음 (혹은 오래전)';
+            }
+            return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${date.getHours()}시 ${date.getMinutes()}분 ${date.getSeconds()}초`;
+        }
+
+        // 스킬 각성 정보 처리
+        const skillAwakening = infoData.skill_awakening.length > 0
+            ? infoData.skill_awakening.map(skill => `    ${skill.skill_name} : ${skill.item_name}`).join('<br>')
+            : '정보 없음';
+
         // 결과 형식화
         let formattedResult = `
             캐릭터: ${infoData.character_name} (${infoData.character_class_name})<br>
             카르제: ${infoData.cairde_name}<br>
             타이틀 수: ${infoData.total_title_count}<br><br>
-            생성 일자: ${infoData.character_date_create}<br>
-            마지막 로그인: ${infoData.character_last_login}<br>
-            마지막 로그아웃: ${infoData.character_last_logout}<br><br>
+            생성 일자: ${formatDate(infoData.character_date_create)}<br>
+            마지막 로그인: ${formatDate(infoData.character_date_last_login)}<br>
+            마지막 로그아웃: ${formatDate(infoData.character_date_last_logout)}<br><br>
             스킬 각성:<br>
+            ${skillAwakening}<br><br>
+            원문 결과:<br><pre>${JSON.stringify(infoData, null, 2)}</pre>
         `;
-
-        // 스킬 각성 데이터 형식화
-        const skillAwakening = infoData.skill_awakening.map(skill => `    ${skill.skill_name} : ${skill.item_name}`).join('<br>');
-        formattedResult += skillAwakening + `<br><br>`;
-
-        // 원문 결과 추가
-        formattedResult += `<br><br>원문 결과:<br><pre>${JSON.stringify(infoData, null, 2)}</pre>`;
 
         resultDiv.innerHTML = formattedResult;
     } catch (error) {
