@@ -12,7 +12,7 @@ async function getCharacterInfo() {
         const idResponse = await fetch(`https://open.api.nexon.com/heroes/v2/id?character_name=${characterName}`, {
             method: 'GET',
             headers: {
-                'x-nxopen-api-key': 'test_851246cc844528a3ae6e5b63f57aba17fa1d33810a475c7bf148917be2056f88efe8d04e6d233bd35cf2fabdeb93fb0d'
+                'x-nxopen-api-key': 'live_851246cc844528a3ae6e5b63f57aba17faaed52d2be2572f58a62f3d0f28965fefe8d04e6d233bd35cf2fabdeb93fb0d'
             }
         });
 
