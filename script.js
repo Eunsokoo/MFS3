@@ -8,17 +8,14 @@ async function getCharacterInfo() {
     }
 
     try {
-        // Base64 인코딩된 API 키 (난독화된 키)
-        const encodedApiKey = 'bGl2ZV84NTEyNDZjYzg0NDUyOGEzYWU2ZTViNjNmNTdhYmExN2ZhYWVkNTJkMmJlMjU3MmY2MmYzZDBmMjg5NjVmZWZlOGQwNGU2ZDIzM2JkMzVjZjJmYWJkZWI5M2ZiMGQ=';
-        
-        // Base64 디코딩
+        const encodedApiKey = 'bGl2ZV84NTEyNDZjYzg0NDUyOGEzYWU2ZTViNjNmNTdhYmExN2ZhYWVkNTJkMmJlMjU3MmY1OGE2MmYzZDBmMjg5NjVmZWZlOGQwNGU2ZDIzM2JkMzVjZjJmYWJkZWI5M2ZiMGQ=';
         const apiKey = atob(encodedApiKey);
 
         // 첫 번째 API 호출: 캐릭터 식별자 가져오기
         const idResponse = await fetch(`https://open.api.nexon.com/heroes/v2/id?character_name=${characterName}`, {
             method: 'GET',
             headers: {
-                'x-nxopen-api-key': apiKey // 디코딩된 API 키 사용
+                'x-nxopen-api-key': apiKey
             }
         });
 
@@ -37,21 +34,20 @@ async function getCharacterInfo() {
         const infoResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/basic?ocid=${ocid}`, {
             method: 'GET',
             headers: {
-                'x-nxopen-api-key': apiKey // 디코딩된 API 키 사용
+                'x-nxopen-api-key': apiKey
             }
         });
 
         if (!infoResponse.ok) {
             throw new Error('캐릭터 기본 정보를 가져올 수 없습니다.');
         }
-
         const infoData = await infoResponse.json();
 
         // 세 번째 API 호출: 캐릭터 능력치 정보 가져오기
         const statResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/stat?ocid=${ocid}`, {
             method: 'GET',
             headers: {
-                'x-nxopen-api-key': apiKey // 디코딩된 API 키 사용
+                'x-nxopen-api-key': apiKey
             }
         });
 
