@@ -8,11 +8,14 @@ async function getCharacterInfo() {
     }
 
     try {
-        // 첫 번째 API 호출: 캐릭터 식별자 가져오기
+        const encodedApiKey = 'bGl2ZV84NTEyNDZjYzg0NDUyOGEzYWU2ZTViNjNmNTdhYmExN2ZhYWVkNTJkMmJlMjU3MmY1OGE2MmYzZDBmMjg5NjVmZWZlOGQwNGU2ZDIzM2JkMzVjZjJmYWJkZWI5M2ZiMGQ=';
+
+        const apiKey = atob(encodedApiKey);
+
         const idResponse = await fetch(`https://open.api.nexon.com/heroes/v2/id?character_name=${characterName}`, {
             method: 'GET',
             headers: {
-                'x-nxopen-api-key': 'live_851246cc844528a3ae6e5b63f57aba17faaed52d2be2572f58a62f3d0f28965fefe8d04e6d233bd35cf2fabdeb93fb0d'
+                'x-nxopen-api-key': apiKey
             }
         });
 
@@ -27,21 +30,18 @@ async function getCharacterInfo() {
             throw new Error('식별자가 없습니다.');
         }
 
-        // 두 번째 API 호출: 캐릭터 기본 정보 가져오기
         const infoResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/basic?ocid=${ocid}`, {
             method: 'GET',
             headers: {
-                'x-nxopen-api-key': 'live_851246cc844528a3ae6e5b63f57aba17faaed52d2be2572f58a62f3d0f28965fefe8d04e6d233bd35cf2fabdeb93fb0d'
+                'x-nxopen-api-key': apiKey
             }
         });
 
         if (!infoResponse.ok) {
             throw new Error('캐릭터 기본 정보를 가져올 수 없습니다.');
         }
-
         const infoData = await infoResponse.json();
 
-        // 날짜 형식 변경 함수
         function formatDate(dateString) {
             const date = new Date(dateString);
             if (isNaN(date.getTime()) || !dateString) {
@@ -50,7 +50,6 @@ async function getCharacterInfo() {
             return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${date.getHours()}시 ${date.getMinutes()}분 ${date.getSeconds()}초`;
         }
 
-        // 스킬 각성 정보 처리
         const skillAwakening = infoData.skill_awakening.length > 0
             ? infoData.skill_awakening.map(skill => {
                 const itemName = skill.item_name.replace('각성의 돌: ', '').trim();
@@ -58,7 +57,6 @@ async function getCharacterInfo() {
             }).join('<br>')
             : '정보 없음';
 
-        // 결과 형식화
         let formattedResult = `
             캐릭터: ${infoData.character_name} (${infoData.character_class_name})<br>
             카르제: ${infoData.cairde_name}<br>
