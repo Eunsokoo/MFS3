@@ -5,43 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마비노기 영웅전 캐릭터 조회</title>
     <style>
-body {
-    font-family: Arial, sans-serif;
-    font-size: 1.4em; /* 전체 글씨 크기 */
-    text-align: center; /* 가운데 정렬 */
-    margin: 20px;
-}
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 1.4em;
+            text-align: center;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
 
-#result {
-    margin: 20px auto;
-    text-align: left; /* 왼쪽 정렬 */
-    font-size: 1em; /* 결과 글씨 크기 */
-    max-width: 800px; /* 결과 영역의 최대 너비 */
-}
+        #result {
+            margin: 20px auto;
+            text-align: center; /* 결과를 가운데 정렬 */
+            font-size: 1em;
+            max-width: 800px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-.skill-item {
-    display: flex;
-    justify-content: space-between;
-    line-height: 0.4; /* 줄 간격 조정 */
-    margin: 0; /* 마진 제거 */
-    padding: 0; /* 패딩 제거 */
+        .stat-item, .skill-item {
+            display: flex;
+            justify-content: center; /* 모든 항목을 가운데 정렬 */
+            line-height: 1.4;
+            margin: 5px 0;
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.9em;
+        }
 
-}
+        .stat-item:last-child, .skill-item:last-child {
+            border-bottom: none;
+        }
 
-.skill-item .skill-name {
-    text-indent: 2000px; /* 왼쪽 정렬된 값 앞에 공백 추가 */
-    text-align: left; /* 왼쪽 정렬 */
-}
+        .stat-name, .skill-name {
+            font-weight: bold;
+            color: #555;
+            margin-right: 10px; /* 약간의 간격 추가 */
+        }
 
-.skill-item .item-name {
-    padding-right: 60px; /* 오른쪽 정렬된 값 뒤에 공백 추가 */
-    text-align: right; /* 오른쪽 정렬 */
-}
+        input, button {
+            font-size: 1.2em;
+            margin: 10px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center; /* 입력 필드와 버튼 텍스트 가운데 정렬 */
+        }
 
-input, button {
-    font-size: 1.2em; /* 입력 필드와 버튼 글씨 크기 */
-    margin: 10px;
-}
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        h5 {
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #777;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
