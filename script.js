@@ -1,3 +1,34 @@
+// 서버로부터 POST 요청을 처리하여 캐릭터명을 입력받고, 그에 따라 getCharacterInfo() 함수를 실행함
+async function handleSpreadsheetRequest(req, res) {
+    try {
+        const { characterName } = req.body; // 스프레드시트로부터 캐릭터명 받음
+        
+        // 캐릭터명을 입력칸에 설정
+        document.getElementById('characterName').value = characterName;
+        
+        // 캐릭터 정보를 조회하는 함수 실행
+        await getCharacterInfo();
+
+        // 결과를 가져와서 응답으로 보냄
+        const result = document.getElementById('result').innerHTML;
+        res.json({ result });
+    } catch (error) {
+        res.status(500).json({ error: '캐릭터 정보를 가져오는 데 실패했습니다.' });
+    }
+}
+
+// 웹 서버가 있는 경우 POST 요청을 처리하는 Express.js 예시
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+app.post('/query', handleSpreadsheetRequest);
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});
+
+
 async function getCharacterInfo() {
     const characterName = document.getElementById('characterName').value;
     const resultDiv = document.getElementById('result');
