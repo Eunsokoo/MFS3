@@ -4,6 +4,8 @@ body {
     min-width: 640px;
     text-align: center;
     margin: 50px;
+    margin-left: 0px;
+    margin-right: 0px;
     background-color: #f4f4f9;
     color: #333;
 }
