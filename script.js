@@ -125,7 +125,7 @@ async function getCharacterInfo() {
             <div class="flex"><span class="ll">카르제</span><div class="dot"></div><span class="rr">${infoData.cairde_name}</span></div><br>
             <div class="flex"><span class="ll">길드명</span><div class="dot"></div><span class="rr">${guildData.guild_name}</span></div><br>
             <div class="flex"><span class="ll">타이틀 수</span><div class="dot"></div><span class="rr">${infoData.total_title_count}</span></div><br>
-            <div class="flex"><span class="ll">장착 타이틀</span><div class="dot"></div><span class="rr">${titleData.title_equipment[0].title_name}</span></div><br>
+            <div class="flex"><span class="ll">장착 타이틀</span><div class="dot"></div><span class="rr">${titleData.title_equipment[0]?.title_name??'없음'}</span></div><br>
             <div class="flex"><span class="ll">생성 일자</span><div class="dot"></div><span class="rr">${formatDate(infoData.character_date_create)}</span></div><br>
             <div class="flex"><span class="ll">마지막 로그인</span><div class="dot"></div><span class="rr">${formatDate(infoData.character_date_last_login)}</span></div><br>
             <div class="flex"><span class="ll">마지막 로그아웃</span><div class="dot"></div><span class="rr">${formatDate(infoData.character_date_last_logout)}</span></div><br></div>
