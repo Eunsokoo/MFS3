@@ -1,34 +1,3 @@
-// 서버로부터 POST 요청을 처리하여 캐릭터명을 입력받고, 그에 따라 getCharacterInfo() 함수를 실행함
-async function handleSpreadsheetRequest(req, res) {
-    try {
-        const { characterName } = req.body; // 스프레드시트로부터 캐릭터명 받음
-        
-        // 캐릭터명을 입력칸에 설정
-        document.getElementById('characterName').value = characterName;
-        
-        // 캐릭터 정보를 조회하는 함수 실행
-        await getCharacterInfo();
-
-        // 결과를 가져와서 응답으로 보냄
-        const result = document.getElementById('result').innerHTML;
-        res.json({ result });
-    } catch (error) {
-        res.status(500).json({ error: '캐릭터 정보를 가져오는 데 실패했습니다.' });
-    }
-}
-
-// 웹 서버가 있는 경우 POST 요청을 처리하는 Express.js 예시
-const express = require('express');
-const app = express();
-app.use(express.json());
-
-app.post('/query', handleSpreadsheetRequest);
-
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
-
-
 async function getCharacterInfo() {
     const characterName = document.getElementById('characterName').value;
     const resultDiv = document.getElementById('result');
@@ -49,14 +18,11 @@ async function getCharacterInfo() {
                 'x-nxopen-api-key': apiKey
             }
         });
-
         if (!idResponse.ok) {
             throw new Error('캐릭터 식별자를 찾을 수 없습니다.');
         }
-
         const idData = await idResponse.json();
         const ocid = idData.ocid;
-
         if (!ocid) {
             throw new Error('식별자가 없습니다.');
         }
@@ -68,10 +34,6 @@ async function getCharacterInfo() {
                 'x-nxopen-api-key': apiKey
             }
         });
-
-        if (!infoResponse.ok) {
-            throw new Error('캐릭터 기본 정보를 가져올 수 없습니다.');
-        }
         const infoData = await infoResponse.json();
 
         // 세 번째 API 호출: 캐릭터 능력치 정보 가져오기
@@ -81,12 +43,38 @@ async function getCharacterInfo() {
                 'x-nxopen-api-key': apiKey
             }
         });
-
-        if (!statResponse.ok) {
-            throw new Error('캐릭터 능력치 정보를 가져올 수 없습니다.');
-        }
-
         const statData = await statResponse.json();
+
+        // 네 번째 API 호출: 길드 정보 가져오기
+        const guildResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/guild?ocid=${ocid}`, {
+            method: 'GET',
+            headers: {
+                'x-nxopen-api-key': apiKey
+            }
+        });
+        const guildData = await guildResponse.json();
+
+        // 다섯 번째 API 호출: 장착 타이틀 가져오기
+        const titleResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/title-equipment?ocid=${ocid}`, {
+            method: 'GET',
+            headers: {
+                'x-nxopen-api-key': apiKey
+            }
+        });
+        const titleData = await titleResponse.json();
+
+        // 여섯 번째 API 호출: 캐릭터 능력치 정보 가져오기
+        const itemResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/stat?ocid=${ocid}`, {
+            method: 'GET',
+            headers: {
+                'x-nxopen-api-key': apiKey
+            }
+        });
+        const itemData = await itemResponse.json();
+
+
+
+        
 
         // 능력치 데이터를 정리하여 원하는 형식으로 출력
         const statMap = {};
@@ -96,13 +84,13 @@ async function getCharacterInfo() {
 
         // 포맷에 맞게 능력치 정리
         let formattedStats = `
-            힘: ${statMap['힘']} 공격력: ${statMap['공격력']}<br>
-            민첩: ${statMap['민첩']} 방어력: ${statMap['방어력']}<br>
-            지능: ${statMap['지능']} 크리티컬: ${statMap['크리티컬']}<br>
-            의지: ${statMap['의지']} 크리티컬 피해량: ${statMap['크리티컬 피해량']}<br>
-            행운: ${statMap['행운']} 크리티컬 저항: ${statMap['크리티컬 저항']}<br>
-            최대 생명력: ${statMap['최대 생명력']} 추가 피해: ${statMap['추가피해']}<br>
-            최대 스태미나: ${statMap['최대 스태미나']} 대항력: ${statMap['대항력']}<br>
+            힘: ${statMap['힘']}     공격력: ${statMap['공격력']}<br>
+            민첩: ${statMap['민첩']}     방어력: ${statMap['방어력']}<br>
+            지능: ${statMap['지능']}     크리티컬: ${statMap['크리티컬']}<br>
+            의지: ${statMap['의지']}     크리티컬 피해량: ${statMap['크리티컬 피해량']}<br>
+            행운: ${statMap['행운']}     크리티컬 저항: ${statMap['크리티컬 저항']}<br>
+            최대 생명력: ${statMap['최대 생명력']}     추가 피해: ${statMap['추가피해']}<br>
+            최대 스태미나: ${statMap['최대 스태미나']}     대항력: ${statMap['대항력']}<br>
             밸런스: ${statMap['밸런스']}<br>
             공격속도: ${statMap['공격속도']}<br>
             공격력 제한 해제: ${statMap['공격력 제한 해제']}<br><br>
@@ -114,29 +102,53 @@ async function getCharacterInfo() {
             if (isNaN(date.getTime()) || !dateString) {
                 return '정보 없음 (혹은 오래전)';
             }
-            return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${date.getHours()}시 ${date.getMinutes()}분 ${date.getSeconds()}초`;
+            return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}. ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
         }
 
         // 스킬 각성 정보 처리
         const skillAwakening = infoData.skill_awakening.length > 0
             ? infoData.skill_awakening.map(skill => {
                 const itemName = skill.item_name.replace('각성의 돌:', '').trim();
-                return `<div class="skill-item"><div>${skill.skill_name}</div>${itemName}</div>`;
+                return `<div class="flex">
+                         <span class="ll">${skill.skill_name}</span>
+                         <div class="dot"></div>
+                         <span class="rr">${itemName}</span>
+                    </div>`;
             }).join('<br>')
             : '정보 없음';
 
         // 결과 형식화
         let formattedResult = `
-            캐릭터: ${infoData.character_name} (${infoData.character_class_name})<br>
-            카르제: ${infoData.cairde_name}<br>
-            타이틀 수: ${infoData.total_title_count}<br><br>
-            생성 일자: ${formatDate(infoData.character_date_create)}<br>
-            마지막 로그인: ${formatDate(infoData.character_date_last_login)}<br>
-            마지막 로그아웃: ${formatDate(infoData.character_date_last_logout)}<br><br>
-            능력치 정보:<br><br>
-            ${formattedStats}<br>
-            스킬 각성:<br><br>
-            ${skillAwakening}<br><br>
+            <div class="inner_border">
+            <div class="title1">=&nbsp;&nbsp;&nbsp;기본정보&nbsp;&nbsp;&nbsp;=</div><br>
+            <div class="flex"><span class="ll">캐릭터</span><div class="dot"></div><span class="rr">${infoData.character_name} (${infoData.character_class_name})</span></div><br>
+            <div class="flex"><span class="ll">카르제</span><div class="dot"></div><span class="rr">${infoData.cairde_name}</span></div><br>
+            <div class="flex"><span class="ll">길드명</span><div class="dot"></div><span class="rr">${guildData.guild_name}</span></div><br>
+            <div class="flex"><span class="ll">타이틀 수</span><div class="dot"></div><span class="rr">${infoData.total_title_count}</span></div><br>
+            <div class="flex"><span class="ll">장착 타이틀</span><div class="dot"></div><span class="rr">${titleData.title_equipment[0].title_name}</span></div><br>
+            <div class="flex"><span class="ll">생성 일자</span><div class="dot"></div><span class="rr">${formatDate(infoData.character_date_create)}</span></div><br>
+            <div class="flex"><span class="ll">마지막 로그인</span><div class="dot"></div><span class="rr">${formatDate(infoData.character_date_last_login)}</span></div><br>
+            <div class="flex"><span class="ll">마지막 로그아웃</span><div class="dot"></div><span class="rr">${formatDate(infoData.character_date_last_logout)}</span></div><br></div>
+            <br>
+
+            <div class="inner_border border2">
+            <div class="title1">=&nbsp;&nbsp;&nbsp;능력치 정보&nbsp;&nbsp;&nbsp;=</div><br>
+            <div class="flex"><span class="ll">힘: ${statMap['힘']}</span><span class="rr">공격력: ${statMap['공격력']}</span></div><br>
+            <div class="flex"><span class="ll">민첩: ${statMap['민첩']}</span><span class="rr">마법공격력: ${statMap['마법공격력']}</span></div><br>
+            <div class="flex"><span class="ll">지능: ${statMap['지능']}</span><span class="rr">방어력: ${statMap['방어력']}</span></div><br>
+            <div class="flex"><span class="ll">의지: ${statMap['의지']}</span><span class="rr">크리티컬: ${statMap['크리티컬']}</span></div><br>
+            <div class="flex"><span class="ll">행운: ${statMap['행운']}</span><span class="rr">크리티컬 피해량: ${statMap['크리티컬 피해량']}</span></div><br>
+            <div class="flex"><span class="ll">최대 생명력: ${statMap['최대 생명력']}</span><span class="rr">크리티컬 저항: ${statMap['크리티컬 저항']}</span></div><br>
+            <div class="flex"><span class="ll">최대 스태미나: ${statMap['최대 스태미나']}</span><span class="rr">추가피해: ${statMap['추가피해']}</span></div><br>
+            <div class="flex"><span class="ll">밸런스: ${statMap['밸런스']}</span><span class="rr">대항력: ${statMap['대항력']}</span></div><br>
+            <div class="flex"><span class="ll">공격속도: ${statMap['공격속도']}</span></div><br>
+            <div class="flex"><span class="ll">공격력 제한 해제: ${statMap['공격력 제한 해제']}</span></div><br></div>
+            <br>
+
+            <div class="inner_border border3">
+            <div class="title1">=&nbsp;&nbsp;&nbsp;스킬 각성&nbsp;&nbsp;&nbsp;=</div><br>
+            ${skillAwakening}<br></div>
+           
         `;
 
         resultDiv.innerHTML = formattedResult;

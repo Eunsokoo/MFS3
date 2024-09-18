@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .flex-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .flex-container .dotted-line {
+            flex-grow: 1;
+            border-bottom: 1px dashed black;
+            margin: 0 10px; /* 텍스트와 점선 사이의 여백 */
+        }
+
+        .left {
+            text-align: left;
+        }
+
+        .right {
+            text-align: right;
+        }
+    </style>
+    <title>점선 자동 생성</title>
+</head>
+<body>
+
+    <div id="content"></div>
+
+    <script>
+        const data = [
+            { left: "캐릭터명", right: "세쿠" },
+            { left: "카르제명", right: "은채린" },
+            { left: "레벨", right: "100" },
+            { left: "타이틀", right: "용사" }
+        ];
+
+        const contentDiv = document.getElementById("content");
+
+        data.forEach(item => {
+            const container = document.createElement("div");
+            container.className = "flex-container";
+
+            const leftSpan = document.createElement("span");
+            leftSpan.className = "left";
+            leftSpan.textContent = item.left;
+
+            const dottedLine = document.createElement("div");
+            dottedLine.className = "dotted-line";
+
+            const rightSpan = document.createElement("span");
+            rightSpan.className = "right";
+            rightSpan.textContent = item.right;
+
+            container.appendChild(leftSpan);
+            container.appendChild(dottedLine);
+            container.appendChild(rightSpan);
+
+            contentDiv.appendChild(container);
+        });
+    </script>
+</body>
+</html>
