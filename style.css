@@ -3,7 +3,7 @@ body {
     font-size: 1.4em;
     min-width: 640px;
     text-align: center;
-    margin: 50px;
+    margin: 20px;
     margin-left: 0px;
     margin-right: 0px;
     background-color: #f4f4f9;
@@ -26,22 +26,16 @@ button:hover {
 }
 
 h1 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: #222;
 }
 
-h5 {
+.subtitle {
     margin-top: 20px;
-    font-size: 0.8em;
+    font-size: 0.6em;
+    font-weight: bold;
     color: #777;
     text-align:center;
-}
-
-subtitle {
-    margin-top: 20px;
-    font-size: 0.8em;
-    color: #777;
-    text-align:end;
 }
 
 .error {
