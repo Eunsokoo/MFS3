@@ -115,7 +115,7 @@ async function getCharacterInfo() {
                     </div>`;
             }).join('<br>')
             : '정보 없음';
-debugger
+
         // 장비 정보
         var EquipitemData = [``,``,``,``,``,``,``,``,``,``,``,``,``,``,``,``,``]
         var Equiphead = [`Earring`,`Right Hand`,`Belt`,`Right Finger`,`Right Wrist`,`Head`,`Upper`,`Lower`,`Leg`,`Artifact`,`Rhod`,`Necklace`,`Left Hand`,`Hand`,`Charm`,`Left Finger`,`Left Wrist`]
