@@ -64,7 +64,7 @@ async function getCharacterInfo() {
         const titleData = await titleResponse.json();
 
         // 여섯 번째 API 호출: 캐릭터 능력치 정보 가져오기
-        const itemResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/stat?ocid=${ocid}`, {
+        const itemResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/item-equipment?ocid=${ocid}`, {
             method: 'GET',
             headers: {
                 'x-nxopen-api-key': apiKey
@@ -74,7 +74,7 @@ async function getCharacterInfo() {
 
 
 
-        
+     
 
         // 능력치 데이터를 정리하여 원하는 형식으로 출력
         const statMap = {};
@@ -116,9 +116,105 @@ async function getCharacterInfo() {
                     </div>`;
             }).join('<br>')
             : '정보 없음';
+debugger
+        // 장비 정보
+        var EquipitemData = [``,``,``,``,``,``,``,``,``,``,``,``,``,``,``,``,``]
+        var Equiphead = [`Earring`,`Right Hand`,`Belt`,`Right Finger`,`Right Wrist`,`Head`,`Upper`,`Lower`,`Leg`,`Artifact`,`Rhod`,`Necklace`,`Left Hand`,`Hand`,`Charm`,`Left Finger`,`Left Wrist`]
+        var iter = 0;
+        while (iter<17) {
+            
+            var itemTemp = itemData.item_equipment.find(item => item && item.item_equipment_slot_name === Equiphead[iter]);
+            if (itemTemp) {
+            
+                
+            switch (iter) {
+                case 4:
+                case 9:
+                case 10:
+                case 16:
+                    EquipitemData[iter] = EquipitemData[iter] + `<span class="select opac">없음</span><br>`;
+                    break;
+                default:
+            if (itemTemp?.item_option?.power_infusion_use_preset_no === 1) {
+                EquipitemData[iter] = EquipitemData[iter] + `
+                <span class="select">&nbsp${itemTemp?.item_option?.power_infusion_preset_1?.stat_name ?? '없음'} +${itemTemp?.item_option?.power_infusion_preset_1?.stat_value ?? '0'}&nbsp</span>&nbsp
+                <span class="nosel">&nbsp${itemTemp?.item_option?.power_infusion_preset_2?.stat_name ?? '없음'} +${itemTemp?.item_option?.power_infusion_preset_2?.stat_value ?? '0'}&nbsp</span><br>
+                `
+            }
+            else if (itemTemp?.item_option?.power_infusion_use_preset_no === 2) {
+                EquipitemData[iter] = EquipitemData[iter] + `
+                <span class="nosel">&nbsp${itemTemp?.item_option?.power_infusion_preset_1?.stat_name ?? '없음'} +${itemTemp?.item_option?.power_infusion_preset_1?.stat_value ?? '0'}&nbsp</span>&nbsp
+                <span class="select">&nbsp${itemTemp?.item_option?.power_infusion_preset_2?.stat_name ?? '없음'} +${itemTemp?.item_option?.power_infusion_preset_2?.stat_value ?? '0'}&nbsp</span><br>
+                `
+            }
+            else {EquipitemData[iter] = EquipitemData[iter] + `<span class="select opac">없음</span><br>`}
+            }
 
+            switch (iter) {
+                case 4:
+                case 16:
+                    EquipitemData[iter] = EquipitemData[iter] + `<span class="select opac">없음</span><br>`;
+                    break;
+                default:
+            if (itemTemp.item_option?.prefix_enchant_use_preset_no === 1) {
+                EquipitemData[iter] = EquipitemData[iter] + `
+                <span class="select">&nbsp${itemTemp?.item_option?.prefix_enchant_preset_1 ?? '없음'}&nbsp</span>&nbsp
+                <span class="nosel">&nbsp${itemTemp?.item_option?.prefix_enchant_preset_2 ?? '없음'}&nbsp</span><br>
+                `
+            }
+            else if (itemTemp.item_option?.prefix_enchant_use_preset_no === 2) {
+                EquipitemData[iter] = EquipitemData[iter] + `
+                <span class="nosel">&nbsp${itemTemp?.item_option?.prefix_enchant_preset_1 ?? '없음'}&nbsp</span>&nbsp
+                <span class="select">&nbsp${itemTemp?.item_option?.prefix_enchant_preset_2 ?? '없음'}&nbsp</span><br>
+                `
+            }
+            else {EquipitemData[iter] = EquipitemData[iter] + `<span class="select opac">없음</span><br>`}
+            }
+
+            switch (iter) {
+                case 4:
+                case 16:
+                    EquipitemData[iter] = EquipitemData[iter] + `<span class="select opac">없음</span><br>`;
+                    break;
+                default:
+            if (itemTemp.item_option?.suffix_enchant_use_preset_no === 1) {
+                EquipitemData[iter] = EquipitemData[iter] + `
+                <span class="select">&nbsp${itemTemp?.item_option?.suffix_enchant_preset_1 ?? '없음'}&nbsp</span>&nbsp
+                <span class="nosel">&nbsp${itemTemp?.item_option?.suffix_enchant_preset_2 ?? '없음'}&nbsp</span><br>
+                `
+            } else if (itemTemp.item_option?.suffix_enchant_use_preset_no === 2) {
+                EquipitemData[iter] = EquipitemData[iter] + `
+                <span class="nosel">&nbsp${itemTemp?.item_option?.suffix_enchant_preset_1 ?? '없음'}&nbsp</span>&nbsp
+                <span class="select">&nbsp${itemTemp?.item_option?.suffix_enchant_preset_2 ?? '없음'}&nbsp</span><br>
+                `
+            } else {EquipitemData[iter] = EquipitemData[iter] + `<span class="select opac">없음</span><br>`}
+            }   
+
+            if (itemTemp?.item_option?.enhancement_level != null) {
+                EquipitemData[iter] = EquipitemData[iter] + `+<span class="bold">${itemTemp?.item_option?.enhancement_level ?? ''} ${itemTemp?.item_name ?? '미착용'}</span><br>` 
+            }
+            else {
+                EquipitemData[iter] = EquipitemData[iter] + `<span class="bold">${itemTemp?.item_name ?? '미착용'}</span><br>`
+            }
+            
+            } else {EquipitemData[iter] = `<span class="gray"><br><br>장비없음<br><br></span>`};
+        iter = iter + 1;
+        
+        }
+        EquipitemData = EquipitemData.map(ment => {return ment.replace(/밸런스/g,`밸런`);});
+        EquipitemData = EquipitemData.map(ment => {return ment.replace(/크리티컬 저항/g,`크저`);});
+        EquipitemData = EquipitemData.map(ment => {return ment.replace(/크리티컬/g,`크리`);});
+        EquipitemData = EquipitemData.map(ment => {return ment.replace(/공격속도/g,`공속`);});
+        EquipitemData = EquipitemData.map(ment => {return ment.replace(/마법공격력/g,`마공`);});
+        EquipitemData = EquipitemData.map(ment => {return ment.replace(/공격력/g,`물공`);});
+        EquipitemData = EquipitemData.map(ment => {return ment.replace(/방어력/g,`방어`);});
+        EquipitemData = EquipitemData.map(ment => {return ment.replace(/\+\-/g,`-`);});
+        // 장비 구멍 있으면 밀려버리는 버그를 고쳐야함
+            
         // 결과 형식화
         let formattedResult = `
+            <div class="grid-container">
+            <div class="grid-item">
             <div class="inner_border">
             <div class="title1">=&nbsp;&nbsp;&nbsp;기본정보&nbsp;&nbsp;&nbsp;=</div><br>
             <div class="flex"><span class="ll">캐릭터</span><div class="dot"></div><span class="rr">${infoData.character_name} (${infoData.character_class_name})</span></div><br>
@@ -133,22 +229,59 @@ async function getCharacterInfo() {
 
             <div class="inner_border border2">
             <div class="title1">=&nbsp;&nbsp;&nbsp;능력치 정보&nbsp;&nbsp;&nbsp;=</div><br>
-            <div class="flex"><span class="ll">힘: ${statMap['힘']}</span><span class="rr">공격력: ${statMap['공격력']}</span></div><br>
-            <div class="flex"><span class="ll">민첩: ${statMap['민첩']}</span><span class="rr">마법공격력: ${statMap['마법공격력']}</span></div><br>
+            <div class="flex"><span class="ll">힘: ${statMap['힘']}</span><span class="rr redbold">공격력: ${statMap['공격력']}</span></div><br>
+            <div class="flex"><span class="ll">민첩: ${statMap['민첩']}</span><span class="rr redbold">마법공격력: ${statMap['마법공격력']}</span></div><br>
             <div class="flex"><span class="ll">지능: ${statMap['지능']}</span><span class="rr">방어력: ${statMap['방어력']}</span></div><br>
-            <div class="flex"><span class="ll">의지: ${statMap['의지']}</span><span class="rr">크리티컬: ${statMap['크리티컬']}</span></div><br>
+            <div class="flex"><span class="ll">의지: ${statMap['의지']}</span><span class="rr redbold">크리티컬: ${statMap['크리티컬']}</span></div><br>
             <div class="flex"><span class="ll">행운: ${statMap['행운']}</span><span class="rr">크리티컬 피해량: ${statMap['크리티컬 피해량']}</span></div><br>
             <div class="flex"><span class="ll">최대 생명력: ${statMap['최대 생명력']}</span><span class="rr">크리티컬 저항: ${statMap['크리티컬 저항']}</span></div><br>
-            <div class="flex"><span class="ll">최대 스태미나: ${statMap['최대 스태미나']}</span><span class="rr">추가피해: ${statMap['추가피해']}</span></div><br>
-            <div class="flex"><span class="ll">밸런스: ${statMap['밸런스']}</span><span class="rr">대항력: ${statMap['대항력']}</span></div><br>
-            <div class="flex"><span class="ll">공격속도: ${statMap['공격속도']}</span></div><br>
-            <div class="flex"><span class="ll">공격력 제한 해제: ${statMap['공격력 제한 해제']}</span></div><br></div>
+            <div class="flex"><span class="ll">최대 스태미나: ${statMap['최대 스태미나']}</span><span class="rr redbold">추가피해: ${statMap['추가피해']}</span></div><br>
+            <div class="flex"><span class="ll redbold">밸런스: ${statMap['밸런스']}</span><span class="rr redbold">대항력: ${statMap['대항력']}</span></div><br>
+            <div class="flex"><span class="ll redbold">공격속도: ${statMap['공격속도']}</span></div><br>
+            <div class="flex"><span class="ll redbold">공격력 제한 해제: ${statMap['공격력 제한 해제']}</span></div><br></div>
             <br>
-
+            </div>
+            <div class="grid-item">
             <div class="inner_border border3">
             <div class="title1">=&nbsp;&nbsp;&nbsp;스킬 각성&nbsp;&nbsp;&nbsp;=</div><br>
-            ${skillAwakening}<br></div>
-           
+            ${skillAwakening}<br>
+            </div>
+            </div>
+            </div>
+            <div class="inner_border border4">
+            <div class="title1">=&nbsp;&nbsp;&nbsp;장비 정보&nbsp;&nbsp;&nbsp;=</div>
+            <div class="gray">보급 장비의 정령작, 인챈트 정보는 표시되지 않습니다.</div>
+            <div class="grid-container2">
+            
+            <div class="grid-item">
+            <div class="inner_border border5 equipback2">${EquipitemData[0]}</div>
+            <div class="inner_border border5">${EquipitemData[1]}</div>
+            <div class="inner_border border5 equipback4"><span class="gray"><br><br>보조장비<br><br></span></div>
+            <div class="inner_border border5 equipback2">${EquipitemData[2]}</div>
+            <div class="inner_border border5 equipback2">${EquipitemData[3]}</div>
+            <div class="inner_border border5 equipback1">${EquipitemData[4]}</div>
+            </div>
+            
+            <div class="grid-item">
+            <div class="inner_border border5">${EquipitemData[5]}</div>
+            <div class="inner_border border5">${EquipitemData[6]}</div>
+            <div class="inner_border border5">${EquipitemData[7]}</div>
+            <div class="inner_border border5">${EquipitemData[8]}</div>
+            <div class="inner_border border5 equipback3">${EquipitemData[9]}</div>
+            <div class="inner_border border5 equipback3">${EquipitemData[10]}</div>
+            </div>
+
+            <div class="grid-item">
+            <div class="inner_border border5 equipback3">${EquipitemData[11]}</div>
+            <div class="inner_border border5 equipback3">${EquipitemData[12]}</div>
+            <div class="inner_border border5">${EquipitemData[13]}</div>
+            <div class="inner_border border5 equipback3">${EquipitemData[14]}</div>
+            <div class="inner_border border5 equipback2">${EquipitemData[15]}</div>
+            <div class="inner_border border5 equipback1">${EquipitemData[16]}</div>
+            </div>
+
+            </div>
+            </div>
         `;
 
         resultDiv.innerHTML = formattedResult;

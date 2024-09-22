@@ -3,65 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>다단 레이아웃 예제</title>
     <style>
-        .flex-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
+.container {
+  display: flex; /* Flexbox 사용 */
+  justify-content: space-between; /* 좌우 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  margin: 10px 0; /* 위아래 간격 추가 */
+  position: relative; /* 자식 요소의 절대 위치를 위한 기준 설정 */
+}
 
-        .flex-container .dotted-line {
-            flex-grow: 1;
-            border-bottom: 1px dashed black;
-            margin: 0 10px; /* 텍스트와 점선 사이의 여백 */
-        }
+.item {
+  padding: 0 20px; /* 좌우 패딩 추가 */
+}
 
-        .left {
-            text-align: left;
-        }
-
-        .right {
-            text-align: right;
-        }
+.container::after {
+  content: ""; /* 가상의 세로선 */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%; /* 가운데 정렬 */
+  width: 1px; /* 세로선의 두께 */
+  background-color: #000; /* 세로선 색상 */
+  transform: translateX(-50%); /* 선을 가운데로 이동 */
+}
     </style>
-    <title>점선 자동 생성</title>
 </head>
 <body>
-
-    <div id="content"></div>
-
-    <script>
-        const data = [
-            { left: "캐릭터명", right: "세쿠" },
-            { left: "카르제명", right: "은채린" },
-            { left: "레벨", right: "100" },
-            { left: "타이틀", right: "용사" }
-        ];
-
-        const contentDiv = document.getElementById("content");
-
-        data.forEach(item => {
-            const container = document.createElement("div");
-            container.className = "flex-container";
-
-            const leftSpan = document.createElement("span");
-            leftSpan.className = "left";
-            leftSpan.textContent = item.left;
-
-            const dottedLine = document.createElement("div");
-            dottedLine.className = "dotted-line";
-
-            const rightSpan = document.createElement("span");
-            rightSpan.className = "right";
-            rightSpan.textContent = item.right;
-
-            container.appendChild(leftSpan);
-            container.appendChild(dottedLine);
-            container.appendChild(rightSpan);
-
-            contentDiv.appendChild(container);
-        });
-    </script>
+    <div class="container">
+        <div class="item left">크리티컬</div>
+        <div class="item right">밸런스</div>
+      </div>
+      <div class="container">
+        <div class="item left">혼돈의</div>
+        <div class="item right">심판</div>
+      </div>
+      <div class="container">
+        <div class="item left">정의로운</div>
+        <div class="item right">용맹</div>
+      </div>
+    </div>
 </body>
 </html>

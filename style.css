@@ -47,8 +47,8 @@ h1 {
     margin: 20px auto;
     text-align: left;
     font-size: 0.8em;
-    min-width: 540px;
-    max-width: 540px;
+    min-width: 900px;
+    max-width: 900px;
     padding: 40px;
     padding-left: 20px;
     padding-right: 20px;
@@ -115,3 +115,79 @@ padding: 0; /* 패딩 제거 */
 .border3 {
     background-color: #bde6db;
 }
+.border4 {
+    background-color: #bdd4e6;
+    text-align: center;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: .8fr 1fr; /* 3개의 열: 1:2:1 비율 */
+    grid-gap: 20px; /* 각 열 사이의 간격 */
+    padding: 10px;
+}
+
+.grid-item {
+    padding: 0px;
+}
+.redbold {
+    font-weight:bold;
+    color:#d85b5b
+}
+.select {
+    font-weight: bold;
+    color:#d85b5b
+}
+.nosel {
+    color:#777
+}
+center {
+    text-align: center;
+}
+.bold {
+    font-weight: bold;
+}
+.grid-container2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* 3개의 열: 1:2:1 비율 */
+    grid-gap: 10px; /* 각 열 사이의 간격 */
+    padding: 10px;
+}
+
+.grid-item {
+    padding: 0px;
+}
+.border5 {
+    background-color: #ffffff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+.equipback1 {
+    background-color:#fdc46d
+}
+.equipback2 {
+    background-color: #cfbde6;
+}
+.equipback3 {
+    background-color: #e6c5bd;
+}
+.equipback4 {
+    background-color: #c2c2c2;
+}
+.gray {
+    color:#777;
+    font-size:112%;
+    ;
+}
+.flex2 {
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    position: relative;
+}
+.item {
+    padding: 0 20px; /* 좌우 패딩 추가 */
+  }
+  .opac {
+    opacity: 0;
+  }
