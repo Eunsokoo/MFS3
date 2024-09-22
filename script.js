@@ -8,14 +8,13 @@ async function getCharacterInfo() {
     }
 
     try {
-        const encodedApiKey = 'bGl2ZV84NTEyNDZjYzg0NDUyOGEzYWU2ZTViNjNmNTdhYmExN2ZhYWVkNTJkMmJlMjU3MmY1OGE2MmYzZDBmMjg5NjVmZWZlOGQwNGU2ZDIzM2JkMzVjZjJmYWJkZWI5M2ZiMGQ=';
-        const apiKey = atob(encodedApiKey);
+        const encodedApiKey = 'bGl2ZV84NTEyNDZjYzg0NDUyOGEzYWU2ZTViNjNmNTdhYmExNzAwODc2MDU0YjU0MzZmYzQ3MTE5ZjcyZGE4NDY0ZGU5ZWZlOGQwNGU2ZDIzM2JkMzVjZjJmYWJkZWI5M2ZiMGQ=';
 
         // 첫 번째 API 호출: 캐릭터 식별자 가져오기
         const idResponse = await fetch(`https://open.api.nexon.com/heroes/v2/id?character_name=${characterName}`, {
             method: 'GET',
             headers: {
-                'x-nxopen-api-key': apiKey
+                'x-nxopen-api-key': atob(encodedApiKey)
             }
         });
         if (!idResponse.ok) {
@@ -31,7 +30,7 @@ async function getCharacterInfo() {
         const infoResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/basic?ocid=${ocid}`, {
             method: 'GET',
             headers: {
-                'x-nxopen-api-key': apiKey
+                'x-nxopen-api-key': atob(encodedApiKey)
             }
         });
         const infoData = await infoResponse.json();
@@ -40,7 +39,7 @@ async function getCharacterInfo() {
         const statResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/stat?ocid=${ocid}`, {
             method: 'GET',
             headers: {
-                'x-nxopen-api-key': apiKey
+                'x-nxopen-api-key': atob(encodedApiKey)
             }
         });
         const statData = await statResponse.json();
@@ -49,7 +48,7 @@ async function getCharacterInfo() {
         const guildResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/guild?ocid=${ocid}`, {
             method: 'GET',
             headers: {
-                'x-nxopen-api-key': apiKey
+                'x-nxopen-api-key': atob(encodedApiKey)
             }
         });
         const guildData = await guildResponse.json();
@@ -58,7 +57,7 @@ async function getCharacterInfo() {
         const titleResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/title-equipment?ocid=${ocid}`, {
             method: 'GET',
             headers: {
-                'x-nxopen-api-key': apiKey
+                'x-nxopen-api-key': atob(encodedApiKey)
             }
         });
         const titleData = await titleResponse.json();
@@ -67,7 +66,7 @@ async function getCharacterInfo() {
         const itemResponse = await fetch(`https://open.api.nexon.com/heroes/v2/character/item-equipment?ocid=${ocid}`, {
             method: 'GET',
             headers: {
-                'x-nxopen-api-key': apiKey
+                'x-nxopen-api-key': atob(encodedApiKey)
             }
         });
         const itemData = await itemResponse.json();
